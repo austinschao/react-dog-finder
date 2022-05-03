@@ -2,37 +2,42 @@ import './App.css';
 import { React, useState } from 'react';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import axios from "axios";
-
-
-
 import DogList from "./DogList"
 import DogDetails from "./DogDetails"
-import Nav from "./Nav"
+import NavBar from "./Nav"
+
+
+
 function App() {
-  const [ dogs , setDogs] = useState({})
+  const [dogs, setDogs] = useState("")
+  const [loading, setLoading] = useState(false);
 
-async function dawgs(){
-  const response = await axios.get("http://localhost:5001/dogs")
-  let dogsData = response.data
-  setDogs(dogsData)
+  async function getDogs(){
+    const response = await axios.get("http://localhost:5001/dogs")
+    let dogs = response.data
+    setDogs(dogs);
+    setLoading(true);
+  }
 
-}
+  console.log(dogs)
+  if (loading === false) {
+    getDogs()
+    return <h1>Loading</h1>
+  } else {
+    return (
+      <div className="App">
+        <h1>Dawgs!</h1>
+        <BrowserRouter>
+        <NavBar dogs={dogs}/>
+          <Routes>
+            <Route path="/" element={<DogList dogs={dogs}/>} />
+            <Route path="/dogs/:name" element={<DogDetails dogs={dogs} />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    );
+  }
 
-dawgs();
-
-  return (
-    <div className="App">
-      <h1>Dawgs!</h1>
-      <BrowserRouter>
-      <Nav dogData={dogs}/>
-        <Routes>
-          <Route path="/dogs" />
-          <Route path="/" element={<DogList />} />
-          <Route path="/dogs/:name" element={<DogDetails />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
 }
 
 export default App;
