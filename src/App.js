@@ -1,6 +1,6 @@
 import './App.css';
 import { React, useState } from 'react';
-import { BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
 import axios from "axios";
 import DogList from "./DogList"
 import DogDetails from "./DogDetails"
@@ -22,21 +22,21 @@ function App() {
   if (loading === false) {
     getDogs()
     return <h1>Loading</h1>
-  } else {
-    return (
-      <div className="App">
-        <h1>Dawgs!</h1>
-        <BrowserRouter>
-        <NavBar dogs={dogs}/>
-          <Routes>
-            <Route path="/" element={<DogList dogs={dogs}/>} />
-            <Route path="/dogs/:name" element={<DogDetails dogs={dogs} />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    );
   }
 
+  return (
+    <div className="App">
+      <h1>Dawgs!</h1>
+      <BrowserRouter>
+      <NavBar dogs={dogs}/>
+        <Routes>
+          <Route path="/dogs" element={<DogList dogs={dogs}/>} />
+          <Route path="/dogs/:name" element={<DogDetails dogs={dogs} />} />
+          <Route path ="/*" element={<Navigate to="/dogs"/>}/>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;
