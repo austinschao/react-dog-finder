@@ -1,12 +1,15 @@
 import react from "react";
 import { Link } from 'react-router-dom';
+import {v4 as uuid} from "uuid"
 
-function NavBar({ dogs }){
+
+function NavBar({ dogs }) {
+  const navLinks = dogs.map(dog =>
+        <Link key={uuid()} to={`/dogs/${dog.name}`}>{dog.name}</Link>
+      )
   return (
     <nav className="NavBar">
-      {dogs.map((dog, i) =>
-        <Link key={i} to={`/dogs/${dog.name}`}>{dog.name}</Link>
-      )}
+      {navLinks}
     </nav>
   )
 }

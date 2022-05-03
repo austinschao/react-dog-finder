@@ -19,7 +19,6 @@ function App() {
     setLoading(true);
   }
 
-  console.log(dogs)
   if (loading === false) {
     getDogs()
     return <h1>Loading</h1>
